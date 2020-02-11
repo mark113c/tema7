@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <style>
+        .red {
+            height: 200px;
+            width: 200px;
+            line-height: 200px;
+            border-radius: 50%;
+            text-align: center;
+            background-color: red;
+        }
+
+        .green {
+            height: 200px;
+            width: 200px;
+            line-height: 200px;
+            text-align: center;
+            background-color: green;
+        }
+    </style>
+
+</head>
+
+<body>
+    <div class="red"></div>
+    <div class="green"></div>
+
+    <script>
+        let greenURL = `http://mabe-kea.dk/E19/pics/frog.png`;
+        let redURL = `http://mabe-kea.dk/E19/pics/pig.png`;
+        let foxURL = `http://mabe-kea.dk/E19/pics/fox.png`;
+
+        document.querySelector(".green").innerHTML = `<img src = ${greenURL} alt=""Billede af en frø>`;
+        document.querySelector(".red").innerHTML = `<img src = ${redURL} alt="Billede af en gris">`;
+        document.querySelector(".red").innerHTML += `<img src = ${foxURL} alt="Billede af en rev">`;
+    </script>
+</body></html>
