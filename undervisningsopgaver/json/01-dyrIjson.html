@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <link rel="stylesheet" href="">
+    <style>
+        article {
+            border: 1px solid black;
+        }
+
+        main {
+            display: grid;
+        }
+    </style>
+</head>
+
+<body>
+    <template>
+        <article class="dyreinfo">
+            <h3></h3>
+            <img>
+            <p class="type">Type:</p>
+            <p class="levested">Levested:</p>
+        </article>
+    </template>
+
+    <section class="data-container"></section>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", start);
+
+        // tomt array
+        let dyrListe = [];
+
+        function start() {
+            hentData();
+        }
+
+        async function hentData() {
+
+            const response = await fetch("alleDyr.json");
+            console.log(response);
+            dyrListe = await response.json();
+            visDyr();
+
+        }
+
+
+
+        console.log(dyrListe);
+
+        function visDyr() {
+
+            const container = document.querySelector(".data-container");
+            const dyrTemplate = document.querySelector("template");
+
+            dyrListe.forEach(dyrtype => {
+                let klon = dyrTemplate.cloneNode(true).content;
+                klon.querySelector("h3").textContent = dyrtype.navn;
+                klon.querySelector(".type").textContent = dyrtype.type;
+                klon.querySelector(".levested").textContent = dyrtype.levested;
+                klon.querySelector("img").src = dyrtype.billede;
+                container.appendChild(klon);
+            })
+        }
+    </script>
+</body></html>
