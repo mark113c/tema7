@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="da">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Personliste</title>
+    <link rel="stylesheet" href="">
+</head>
+
+<body>
+
+    <section id="detalje">
+        <article class="person">
+            <button class="luk">X</button>
+            <h2></h2>
+            <img src="" alt="">
+            <p>Github: <a class="githublink" href=""></a>
+            </p>
+        </article>
+    </section>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        #detalje {
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: antiquewhite;
+        }
+
+        #detalje .luk {
+            position: fixed;
+            top: 0;
+            right: 0;
+            font-size: 4rem;
+
+        }
+
+        #detalje .person {
+            width: 60vw;
+            min-height: 50vw;
+            margin: 4rem auto;
+            padding: 4rem;
+            background-color: white;
+
+        }
+
+    </style>
+
+
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const id = urlParams.get("id");
+
+        let personListe = [];
+
+        document.addEventListener("DOMContentLoaded", start);
+
+        const link = "https://spreadsheets.google.com/feeds/list/1XWWbfWszD7f4jHqp51V_oT3pkHuR-ceEUw4YtrvK7F0/od6/public/values?alt=json"
+
+        function start() {
+            hentData();
+
+        }
+
+        async function hentData() {
+            const respone = await fetch(link);
+            personListe = await respone.json();
+            console.log("personListe");
+            visPersoner();
+        }
+
+        const container = document.querySelector(".data-container");
+        const personTemplate = document.querySelector("template");
+
+        function visPersoner() {
+            detalje.querySelector(".luk").addEventListener("click", () => {
+                history.back();
+            })
+
+            personListe.feed.entry.forEach(person => {
+
+                if (person.gsx$id.$t == id) {
+
+
+                    document.querySelector("#detalje h2").textContent = person.gsx$navn.$t;
+                    document.querySelector("#detalje img").src = person.gsx$billede.$t;
+
+                    document.querySelector("#detalje p").textContent = person.gsx$alder.$t;
+
+
+                };
+            })
+        }
+
+        //        function visInfo(person) {
+        // console.log("visInfo");
+        // detalje.classList.remove("hide");
+        // lukKnap.addEventListener("click", () => detalje.classList.add("hide"));
+        // document.querySelector("#detalje img").src = person.gsx$billede.$t;
+        // document.querySelector("#detalje .alder").textContent = person.gsx$alder.$t;
+        // document.querySelector("#detalje .hobby").textContent = person.gsx$hobby.$t;
+        //
+        // }
+
+        const detalje = document.querySelector("#detalje");
+        const lukKnap = document.querySelector("#luk");
+
+    </script>
+</body>
+
+</html>

@@ -30,7 +30,15 @@
 
     <section class="data-container"></section>
 
-    <section id="detalje"></section>
+    <section id="detalje">
+        <article class="person">
+            <button class="luk">X</button>
+            <h2></h2>
+            <img src="" alt="">
+            <p>Github: <a class="githublink" href=""></a>
+            </p>
+        </article>
+    </section>
 
     <style>
         * {
@@ -45,6 +53,25 @@
             height: 100vh;
             background-color: antiquewhite;
         }
+
+        #detalje .luk {
+            position: fixed;
+            top: 0;
+            right: 0;
+            font-size: 4rem;
+
+        }
+
+        #detalje .person {
+            width: 60vw;
+            min-height: 50vw;
+            margin: 4rem auto;
+            padding: 4rem;
+            background-color: white;
+
+        }
+
+
 
         .valgt {
             background-color: blue;
