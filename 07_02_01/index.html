@@ -9,6 +9,18 @@
 </head>
 
 <body>
+    <header>
+        <div class="headerimage"></div>
+        <nav class="menu">
+            <h1>Alle</h1>
+            <button class="filter valgt" data-mad="alle">Alle</button>
+            <button type="button" class="filter" data-mad="forretter">Forretter</button>
+            <button type="button" class="filter " data-mad="hovedretter">Hovedretter</button>
+            <button type="button" class="filter" data-mad="desserter">Desserter</button>
+            <button type="button" class="filter" data-mad="sideorders">Sideorders</button>
+            <button type="button" class="filter" data-mad="drikkevarer">Drikkevarer</button>
+        </nav>
+    </header>
     <template>
         <article>
             <img>
@@ -18,11 +30,29 @@
         </article>
     </template>
 
+
+
     <section class="data-container"></section>
 
     <style>
         * {
             box-sizing: border-box;
+        }
+
+        .headerimage {
+            width: 100vw;
+            height: 10vw;
+            background-color: orange;
+        }
+
+        .valgt {
+            background-color: blue;
+            color: white;
+        }
+
+        header {
+            text-align: center;
+
         }
 
         .data-container {
@@ -54,6 +84,7 @@
         img {
             width: 100%;
         }
+
     </style>
 
 
@@ -66,6 +97,7 @@
 
         function start() {
             hentData();
+            addEvenlistenersToAllButtons();
         }
 
         async function hentData() {
@@ -75,18 +107,43 @@
             visContent();
         }
 
-        function visContent() {
-            const container = document.querySelector(".data-container");
-            const babushkaTemplate = document.querySelector("template");
+        let filter = "alle";
+        const container = document.querySelector(".data-container");
+        const babushkaTemplate = document.querySelector("template");
 
+        function visContent() {
+            container.innerHTML = "";
             babushkaContent.feed.entry.forEach(ret => {
-                let klon = babushkaTemplate.cloneNode(true).content;
-                klon.querySelector("h2").textContent = ret.gsx$navn.$t;
-                klon.querySelector("h3").textContent = ret.gsx$kort.$t;
-                klon.querySelector("p").textContent = ret.gsx$pris.$t;
-                klon.querySelector("img").src = ret.gsx$billede.$t;
-                container.appendChild(klon);
+                if (filter == "alle" || filter == ret.gsx$kategori.$t) {
+                    let klon = babushkaTemplate.cloneNode(true).content;
+                    klon.querySelector("h2").textContent = ret.gsx$navn.$t;
+                    klon.querySelector("h3").textContent = ret.gsx$kort.$t;
+                    klon.querySelector("p").textContent = ret.gsx$pris.$t;
+                    klon.querySelector("img").src = "imgs/small/" + ret.gsx$billede.$t + "-sm.jpg";
+                    container.appendChild(klon);
+                }
             })
         }
+
+        function addEvenlistenersToAllButtons() {
+
+            document.querySelectorAll(".filter").forEach(elm => {
+                elm.addEventListener("click", filtrering);
+            })
+        }
+
+        function filtrering() {
+            console.log("FILTER");
+            filter = this.dataset.mad;
+            document.querySelector("header h1").textContent = this.textContent;
+            document.querySelectorAll(".filter").forEach(elm2 => {
+                elm2.classList.remove("valgt");
+            })
+            this.classList.add("valgt");
+            visContent();
+        }
+
     </script>
-</body></html>
+</body>
+
+</html>
