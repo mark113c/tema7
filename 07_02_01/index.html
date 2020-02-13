@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="da">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Babushka</title>
+    <link rel="stylesheet" href="">
+</head>
+
+<body>
+    <template>
+        <article>
+            <img>
+            <h2></h2>
+            <h3></h3>
+            <p></p>
+        </article>
+    </template>
+
+    <section class="data-container"></section>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        .data-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            margin: 3vw 20vw;
+        }
+
+        article {
+            padding: 20px;
+            margin: 10px;
+            background-color: lightblue;
+        }
+
+        h2 {
+            font-size: 2rem;
+            font-family: helvetica;
+        }
+
+        h3 {
+            font-family: helvetica;
+        }
+
+        p {
+
+            font-family: helvetica;
+        }
+
+        img {
+            width: 100%;
+        }
+    </style>
+
+
+    <script>
+        let babushkaContent = [];
+
+        document.addEventListener("DOMContentLoaded", start);
+
+        const link = "https://spreadsheets.google.com/feeds/list/17Dd7DvkPaFamNUdUKlrFgnH6POvBJXac7qyiS6zNRw0/od6/public/values?alt=json&fbclid=IwAR1lXj-TSzDsCfiZs8HAYu7UOnf8mf7K5CyYC_H6ZmkcAckhSOXtpGYmqQc"
+
+        function start() {
+            hentData();
+        }
+
+        async function hentData() {
+            const respone = await fetch(link);
+            babushkaContent = await respone.json();
+            console.log("babushkaContent");
+            visContent();
+        }
+
+        function visContent() {
+            const container = document.querySelector(".data-container");
+            const babushkaTemplate = document.querySelector("template");
+
+            babushkaContent.feed.entry.forEach(ret => {
+                let klon = babushkaTemplate.cloneNode(true).content;
+                klon.querySelector("h2").textContent = ret.gsx$navn.$t;
+                klon.querySelector("h3").textContent = ret.gsx$kort.$t;
+                klon.querySelector("p").textContent = ret.gsx$pris.$t;
+                klon.querySelector("img").src = ret.gsx$billede.$t;
+                container.appendChild(klon);
+            })
+        }
+    </script>
+</body></html>

@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="da">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Personliste</title>
+    <link rel="stylesheet" href="">
+</head>
+
+<body>
+    <header>
+        <h1>Alle</h1>
+        <nav class="menu">
+            <button class="filter valgt" data-køn=alle>Alle</button>
+            <button class="filter" data-køn="m">Mænd</button>
+            <button class="filter " data-køn="k">Kvinder</button>
+            <button class="filter" data-køn="andet">Andet</button>
+        </nav>
+    </header>
+    <template>
+        <article>
+            <h2></h2>
+            <h3></h3>
+            <img>
+            <p class="alder"></p>
+            <p class="hobby"></p>
+        </article>
+    </template>
+
+    <section class="data-container"></section>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        .valgt {
+            background-color: blue;
+            color: white;
+        }
+
+        header {
+            text-align: center;
+
+        }
+
+        .data-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        }
+
+        article {
+            padding: 20px;
+            margin: 10px;
+            background-color: lightblue;
+        }
+
+        h2 {
+            font-size: 2rem;
+            font-family: helvetica;
+        }
+
+        h3 {
+            font-family: helvetica;
+        }
+
+        p {
+
+            font-family: helvetica;
+        }
+
+        img {
+            width: 100%;
+        }
+
+    </style>
+
+
+    <script>
+        let personListe = [];
+        let filter = "alle";
+        document.addEventListener("DOMContentLoaded", start);
+
+        const link = "https://spreadsheets.google.com/feeds/list/1XWWbfWszD7f4jHqp51V_oT3pkHuR-ceEUw4YtrvK7F0/od6/public/values?alt=json"
+
+        function start() {
+            hentData();
+        }
+
+        async function hentData() {
+            const respone = await fetch(link);
+            personListe = await respone.json();
+            console.log("personListe");
+            visPersoner();
+        }
+
+        function visPersoner() {
+            container.innerHTML = "";
+            const container = document.querySelector(".data-container");
+            const personTemplate = document.querySelector("template");
+
+            personListe.feed.entry.forEach(person => {
+                if (filter == "alle" || filter == person.gsx$sex.$t) {
+                    let klon = personTemplate.cloneNode(true).content;
+                    klon.querySelector("h2").textContent = person.gsx$navn.$t;
+                    klon.querySelector("h3").textContent = person.gsx$efternavn.$t;
+                    klon.querySelector(".alder").textContent = "Alder: " + person.gsx$alder.$t;
+                    klon.querySelector(".hobby").textContent = "Hobby: " + person.gsx$hobby.$t;
+                    klon.querySelector("img").src = person.gsx$billede.$t;
+                    container.appendChild(klon);
+                }
+            })
+        }
+
+        function addEventListenersToButtons() {
+
+            document.querySelectorAll(".filter").forEach(elm => {
+                elm.addEventListener("click", filtrering);
+            })
+        }
+
+        function filtrering() {
+            console.log("FILTER");
+            filter = this.dataset.køn;
+            visPersoner();
+        }
+
+    </script>
+</body>
+
+</html>
